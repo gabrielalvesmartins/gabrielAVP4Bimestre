@@ -1,0 +1,12 @@
+import { Router } from "express";
+import * as controller from "../controllers/reservation.controller.js";
+import { authenticate } from "../middleware/auth.js";
+import { validate } from "../middleware/validate.js";
+import { reservationIdSchema, reservationSchema, reservationUpdateSchema } from "../schemas/reservation.schema.js";
+export const reservationRouter = Router();
+reservationRouter.use(authenticate);
+reservationRouter.get("/", controller.list);
+reservationRouter.get("/:id", validate(reservationIdSchema), controller.get);
+reservationRouter.post("/", validate(reservationSchema), controller.create);
+reservationRouter.patch("/:id", validate(reservationUpdateSchema), controller.update);
+reservationRouter.delete("/:id", validate(reservationIdSchema), controller.remove);

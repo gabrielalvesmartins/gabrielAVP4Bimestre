@@ -1,0 +1,12 @@
+import { Router } from "express";
+import * as controller from "../controllers/equipment.controller.js";
+import { authenticate, requireAdmin } from "../middleware/auth.js";
+import { validate } from "../middleware/validate.js";
+import { equipmentSchema, equipmentUpdateSchema, idParamSchema } from "../schemas/equipment.schema.js";
+export const equipmentRouter = Router();
+equipmentRouter.use(authenticate);
+equipmentRouter.get("/", controller.list);
+equipmentRouter.get("/:id", validate(idParamSchema), controller.get);
+equipmentRouter.post("/", requireAdmin, validate(equipmentSchema), controller.create);
+equipmentRouter.patch("/:id", requireAdmin, validate(equipmentUpdateSchema), controller.update);
+equipmentRouter.delete("/:id", requireAdmin, validate(idParamSchema), controller.remove);
